@@ -88,7 +88,7 @@
     "eslint-plugin-vue": "^8.5.0",
     "husky": "^7.0.2",
     "mkcert": "^1.4.0",
-    "postcss": "^8.3.6",
+    "postcss": "^8.4.31",
     "prettier": "^2.6.2",
     "rollup-plugin-string": "^3.0.0",
     "sass": "^1.38.1",
