@@ -7,10 +7,6 @@
     {
       "source": "/oauth2/v1/(.*)",
       "destination": "https://auth.zhishuyun.com/oauth2/v1/$1"
-    },
-    {
-      "source": "/api/v1/me",
-      "destination": "https://auth.zhishuyun.com/api/v1/me"
     }
   ]
 }
