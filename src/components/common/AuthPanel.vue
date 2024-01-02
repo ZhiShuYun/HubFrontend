@@ -1,6 +1,13 @@
 <template>
-  <el-dialog :model-value="!authenticated" class="dialog" width="400px">
-    <iframe width="100%" height="100%" :src="iframeUrl" title="Auth Panel"></iframe>
+  <el-dialog
+    :model-value="!authenticated"
+    modal-class="dialog"
+    width="400px"
+    :show-close="false"
+    :close-on-press-escape="false"
+    :close-on-click-modal="false"
+  >
+    <iframe width="360" height="560" :src="iframeUrl" frameborder="0" />
   </el-dialog>
 </template>
 
@@ -16,7 +23,7 @@ export default defineComponent({
   },
   data() {
     return {
-      iframeUrl: getBaseUrlAuth()
+      iframeUrl: `${getBaseUrlAuth()}/auth/login`
     };
   },
   computed: {
@@ -25,17 +32,20 @@ export default defineComponent({
     }
   },
   mounted() {
-    window.addEventListener('message', (event: MessageEvent) => {
-      console.log('data', event.data);
+    window.addEventListener('message', async (event: MessageEvent) => {
+      if (event.origin !== getBaseUrlAuth()) {
+        return;
+      }
       if (event.data.name === 'login') {
         const data = event.data.data;
-        console.log('data', data);
         const token = {
           access: data.access_token,
           refresh: data.refresh_token,
           expiration: data.expires_in
         };
-        this.$store.dispatch('setToken', token);
+        await this.$store.dispatch('setToken', token);
+        await this.$store.dispatch('getUser');
+        window.location.reload();
       }
     });
   }
