@@ -21,7 +21,7 @@ export default defineComponent({
   },
   computed: {
     authenticated() {
-      return !!this.$store.state.auth.token.access;
+      return !!this.$store.state.token.access;
     }
   },
   mounted() {
