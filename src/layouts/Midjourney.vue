@@ -18,7 +18,7 @@
     <el-drawer v-model="drawer" :with-header="false" size="300px" class="drawer">
       <slot name="presets" />
     </el-drawer>
-    <el-drawer v-model="drawer2" :with-header="false" size="420px" class="drawer2">
+    <el-drawer v-model="drawer2" :show-close="true" size="400px" class="drawer2">
       <slot name="results" />
     </el-drawer>
   </div>
@@ -44,6 +44,19 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss">
+.drawer2 {
+  .el-drawer__header {
+    margin-bottom: 0;
+  }
+  .el-drawer__body {
+    .tasks {
+      padding-top: 0;
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .main {

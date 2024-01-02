@@ -1,11 +1,12 @@
 <template>
-  <div class="wrapper">
-    <div class="left">
-      <navigator />
+  <div class="main">
+    <div class="side">
+      <slot name="side">
+        <side-panel />
+      </slot>
     </div>
-    <div class="right">
-      <side-panel class="side" />
-      <router-view class="main" />
+    <div class="chat">
+      <slot name="chat" />
     </div>
     <el-button round class="menu" @click="drawer = true">
       <font-awesome-icon icon="fa-solid fa-bars" class="icon-menu" />
@@ -18,7 +19,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Navigator from '@/components/common/Navigator.vue';
 import SidePanel from '@/components/chat/SidePanel.vue';
 import { ElDrawer, ElButton } from 'element-plus';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -27,7 +27,6 @@ export default defineComponent({
   name: 'LayoutChat',
   components: {
     SidePanel,
-    Navigator,
     ElDrawer,
     ElButton,
     FontAwesomeIcon
@@ -53,45 +52,44 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  width: 100%;
-  height: 100%;
+.main {
+  width: calc(100% - 60px);
   display: flex;
   flex-direction: row;
-  .left {
-    width: 60px;
+  .side {
+    width: 300px;
     height: 100%;
-    border-right: 1px solid var(--el-border-color);
+    overflow-y: scroll;
   }
-  .right {
+
+  .chat {
     height: 100%;
+    padding: 15px;
     flex: 1;
-    width: calc(100% - 60px);
-    width: 100%;
+    width: calc(100% - 300px);
     height: 100%;
     display: flex;
-    flex-direction: row;
-  }
-  .menu {
-    display: none;
+    flex-direction: column;
   }
 }
 
+.menu {
+  display: none;
+}
+
 @media (max-width: 767px) {
-  .wrapper {
-    .right {
-      width: 100%;
-      .side {
-        display: none;
-      }
-    }
-    .menu {
-      display: block;
-      position: fixed;
-      right: 20px;
-      top: 20px;
-      z-index: 2000;
-    }
+  .side {
+    display: none;
+  }
+  .chat {
+    width: 100%;
+  }
+  .menu {
+    display: block;
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    z-index: 2000;
   }
 }
 </style>

@@ -23,6 +23,7 @@ export default defineComponent({
   height: 100%;
   display: flex;
   flex-direction: row;
+  overflow: hidden;
   .navigator {
     width: 60px;
     height: 100%;
