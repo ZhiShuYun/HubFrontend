@@ -362,10 +362,12 @@ export default defineComponent({
   .value {
     font-weight: 600;
     font-size: 30px;
+    margin: 0;
   }
   .description {
     color: #999;
     font-size: 14px;
+    margin-bottom: 5px;
   }
 }
 
