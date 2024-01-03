@@ -5,6 +5,7 @@
       <api-status
         :initializing="initializing"
         :application="application"
+        :need-apply="needApply"
         :api-id="model.apiId"
         @refresh="$store.dispatch('chat/getApplications')"
       />
@@ -102,6 +103,9 @@ export default defineComponent({
     },
     application() {
       return this.applications?.find((application: IApplication) => application.api?.id === this.model.apiId);
+    },
+    needApply() {
+      return this.$store.state.chat.getApplicationsStatus === Status.Success && !this.application;
     },
     applications() {
       return this.$store.state.chat.applications;
