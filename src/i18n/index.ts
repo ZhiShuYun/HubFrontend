@@ -1,7 +1,7 @@
 import enLang from './en/index';
 import zhLang from './zh/index';
-import enLocale from 'element-plus/lib/locale/lang/en';
-import zhLocale from 'element-plus/lib/locale/lang/zh-cn';
+import enLocale from 'element-plus/es/locale/lang/en';
+import zhLocale from 'element-plus/es/locale/lang/zh-cn';
 import { createI18n } from 'vue-i18n';
 
 const i18n = createI18n({
