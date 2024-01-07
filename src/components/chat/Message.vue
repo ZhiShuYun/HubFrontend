@@ -33,7 +33,7 @@ import AnsweringMark from './AnsweringMark.vue';
 import copy from 'copy-to-clipboard';
 import { ElAlert, ElButton } from 'element-plus';
 import MarkdownRenderer from '@/components/common/MarkdownRenderer.vue';
-import { IApplication, IChatMessage, IChatMessageState, ROLE_ASSISTANT } from '@/operators';
+import { IApplication, IChatMessage, IChatMessageState } from '@/operators';
 import CopyToClipboard from '../common/CopyToClipboard.vue';
 import {
   ERROR_CODE_API_ERROR,
@@ -43,7 +43,8 @@ import {
   ERROR_CODE_TIMEOUT,
   ERROR_CODE_TOO_MANY_REQUESTS,
   ERROR_CODE_UNKNOWN,
-  ERROR_CODE_USED_UP
+  ERROR_CODE_USED_UP,
+ROLE_ASSISTANT
 } from '@/constants';
 import message from '@/i18n/zh/common/message';
 import { ROUTE_CONSOLE_APPLICATION_BUY } from '@/router';
