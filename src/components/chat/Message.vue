@@ -44,7 +44,7 @@ import {
   ERROR_CODE_TOO_MANY_REQUESTS,
   ERROR_CODE_UNKNOWN,
   ERROR_CODE_USED_UP,
-ROLE_ASSISTANT
+  ROLE_ASSISTANT
 } from '@/constants';
 import message from '@/i18n/zh/common/message';
 import { ROUTE_CONSOLE_APPLICATION_BUY } from '@/router';
