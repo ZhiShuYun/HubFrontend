@@ -9,7 +9,7 @@
   >
     <iframe width="360" height="560" :src="iframeUrl" frameborder="0" />
   </el-dialog>
-  <el-dialog :model-value="!!qrLink" width="400px" :show-close="true">
+  <el-dialog :model-value="!!qrLink" width="400px" :show-close="false">
     <qr-code
       v-if="qrLink"
       :value="qrLink"
