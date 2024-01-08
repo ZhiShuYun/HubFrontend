@@ -5,7 +5,7 @@ import {
   IChatdocRepositoriesResponse,
   IChatdocRepositoryResponse
 } from './models';
-import { BASE_URL_API } from '@/constants';
+import { ACTION_RETRIEVE_ALL, BASE_URL_API } from '@/constants';
 import { ACTION_CREATE, ACTION_DELETE, ACTION_RETRIEVE, ACTION_RETRIEVE_BATCH } from '@/constants';
 
 class ChatdocOperator {
@@ -44,7 +44,7 @@ class ChatdocOperator {
     );
   }
 
-  async retrieveRepository(id: string, options: { token: string }): Promise<AxiosResponse<IChatdocRepositoryResponse>> {
+  async getRepository(id: string, options: { token: string }): Promise<AxiosResponse<IChatdocRepositoryResponse>> {
     return await axios.post(
       `/chatdoc/repositories`,
       {
@@ -62,7 +62,24 @@ class ChatdocOperator {
     );
   }
 
-  async retrieveRepositories(ids: string[]): Promise<AxiosResponse<IChatdocRepositoriesResponse>> {
+  async getAllRepositories(options: { token: string }): Promise<AxiosResponse<IChatdocRepositoriesResponse>> {
+    return await axios.post(
+      `/chatdoc/repositories`,
+      {
+        action: ACTION_RETRIEVE_ALL
+      },
+      {
+        headers: {
+          authorization: `Bearer ${options.token}`,
+          accept: 'application/json',
+          'content-type': 'application/json'
+        },
+        baseURL: BASE_URL_API
+      }
+    );
+  }
+
+  async getRepositories(ids: string[]): Promise<AxiosResponse<IChatdocRepositoriesResponse>> {
     return await axios.post(
       `/chatdoc/repositories`,
       {

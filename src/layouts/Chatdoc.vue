@@ -78,7 +78,7 @@ export default defineComponent({
       await this.$store.dispatch('chatdoc/getApplications');
     },
     async onGetRepositories() {
-      await this.$store.dispatch('chatdoc/onGetRepositories');
+      await this.$store.dispatch('chatdoc/getRepositories');
     },
     async onClickMenu(menuItem: IMenuItem) {
       this.activeMenu = menuItem.index;
