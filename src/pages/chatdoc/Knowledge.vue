@@ -1,6 +1,6 @@
 <template>
   <layout>
-    <template #chatdoc> Index </template>
+    <template #chatdoc> Knowledge </template>
   </layout>
 </template>
 

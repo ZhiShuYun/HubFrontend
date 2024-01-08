@@ -1,6 +1,6 @@
 <template>
   <layout>
-    <template #chatdoc> Index </template>
+    <template #chatdoc> Chat </template>
   </layout>
 </template>
 
@@ -9,7 +9,7 @@ import { defineComponent } from 'vue';
 import Layout from '@/layouts/Chatdoc.vue';
 
 export default defineComponent({
-  name: 'ChatdocKnowledge',
+  name: 'ChatdocChat',
   components: {
     Layout
   },

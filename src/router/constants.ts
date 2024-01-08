@@ -10,6 +10,9 @@ export const ROUTE_MIDJOURNEY_INDEX = 'midjourney-index';
 export const ROUTE_MIDJOURNEY_HISTORY = 'midjourney-history';
 
 export const ROUTE_CHATDOC_INDEX = 'chatdoc-index';
+export const ROUTE_CHATDOC_CHAT = 'chatdoc-chat';
+export const ROUTE_CHATDOC_SETTING = 'chatdoc-setting';
+export const ROUTE_CHATDOC_KNOWLEDGE = 'chatdoc-knowledge';
 
 export const ROUTE_CONSOLE_ROOT = 'console-root';
 export const ROUTE_CONSOLE_ORDER_LIST = 'console-order-list';
