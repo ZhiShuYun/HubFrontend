@@ -18,7 +18,7 @@ export default {
       component: () => import('@/pages/chatdoc/Chat.vue')
     },
     {
-      path: 'knowledge',
+      path: 'knowledge/:id',
       name: ROUTE_CHATDOC_KNOWLEDGE,
       component: () => import('@/pages/chatdoc/Knowledge.vue')
     },

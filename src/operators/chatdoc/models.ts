@@ -2,6 +2,9 @@ import { ACTION_CREATE, ACTION_DELETE, ACTION_UPDATE, ROLE_ASSISTANT, ROLE_SYSTE
 
 export interface IChatdocRepository {
   id: string;
+  name?: string;
+  description?: string;
+  documents?: IChatdocDocument[];
 }
 
 export interface IChatdocDocument {

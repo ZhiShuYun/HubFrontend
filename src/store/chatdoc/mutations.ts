@@ -20,6 +20,20 @@ export const setRepositories = (state: IChatdocState, payload: IChatdocRepositor
   state.repositories = payload;
 };
 
+export const setRepository = (state: IChatdocState, payload: { repository: IChatdocRepository }): void => {
+  // find the repository and set it
+  const { repository } = payload;
+  const repositories = state.repositories;
+  if (!repositories) {
+    return;
+  }
+  const index = repositories.findIndex((item: IChatdocRepository) => item.id === repository.id);
+  if (index === -1) {
+    return;
+  }
+  repositories[index] = repository;
+};
+
 export const setGetRepositoriesStatus = (state: IChatdocState, payload: Status): void => {
   state.getRepositoriesStatus = payload;
 };
@@ -28,6 +42,7 @@ export default {
   setApplications,
   setGetApplicationsStatus,
   setRepositories,
+  setRepository,
   setGetRepositoriesStatus,
   resetAll
 };

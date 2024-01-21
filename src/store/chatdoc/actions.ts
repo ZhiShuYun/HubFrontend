@@ -15,6 +15,10 @@ export const setApplications = async ({ commit }: any, payload: IApplication[]):
   commit('setApplications', payload);
 };
 
+export const setRepository = async ({ commit }: any, payload: { repository: IChatdocRepository }): Promise<void> => {
+  commit('setRepository', payload);
+};
+
 export const getApplications = async ({
   commit,
   rootState
@@ -63,9 +67,37 @@ export const getRepositories = async ({
   return repositories;
 };
 
+export const getRepository = async (
+  { commit, state }: ActionContext<IChatdocState, IRootState>,
+  payload: { id: string }
+): Promise<IChatdocRepository> => {
+  log(getRepository, 'start to get repository');
+  // commit('setGetRepositoryStatus', Status.Request);
+  const applications = state.applications;
+  const application = applications?.find(
+    (application: IApplication) => application.api?.id === API_ID_CHATDOC_REPOSITORIES
+  );
+  const token = application?.credential?.token;
+  if (!token) {
+    commit('setRepository', { id: payload.id });
+    return Promise.reject('no token');
+  }
+  const repository = (
+    await chatdocOperator.getRepository(payload.id, {
+      token
+    })
+  ).data;
+  // commit('setGetRepositoryStatus', Status.Success);
+  log(getRepository, 'get repository success', repository);
+  commit('setRepository', repository);
+  return repository;
+};
+
 export default {
   setApplications,
   getApplications,
   getRepositories,
+  getRepository,
+  setRepository,
   resetAll
 };
