@@ -3,7 +3,7 @@ import { IRootState, Status } from '../common/models';
 import { ActionContext } from 'vuex';
 import { log } from '@/utils/log';
 import { IChatdocState } from './models';
-import { IChatdocRepository } from '@/operators/chatdoc/models';
+import { IChatdocDocument, IChatdocRepository } from '@/operators/chatdoc/models';
 import { chatdocOperator } from '@/operators/chatdoc/operator';
 import {
   API_ID_CHATDOC_CHAT,
@@ -65,6 +65,38 @@ export const getRepositories = async ({
   log(getRepositories, 'get repositories success', repositories);
   commit('setRepositories', repositories);
   return repositories;
+};
+
+export const getDocuments = async (
+  { commit, state }: ActionContext<IChatdocState, IRootState>,
+  payload: { repositoryId: string }
+): Promise<IChatdocDocument[]> => {
+  log(getRepositories, 'start to get documents');
+  const applications = state.applications;
+  console.log('applications', applications);
+  const application = applications?.find(
+    (application: IApplication) => application.api?.id === API_ID_CHATDOC_DOCUMENTS
+  );
+  console.log('application', application);
+  const token = application?.credential?.token;
+  if (!token) {
+    commit('setRepository', {
+      id: payload.repositoryId,
+      documents: []
+    });
+    return [];
+  }
+  const documents = (
+    await chatdocOperator.getAllDocuments(payload.repositoryId, {
+      token
+    })
+  ).data;
+  log(getRepositories, 'get documents success', documents);
+  commit('setRepository', {
+    id: payload.repositoryId,
+    documents: []
+  });
+  return documents;
 };
 
 export const getRepository = async (

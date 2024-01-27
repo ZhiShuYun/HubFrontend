@@ -39,6 +39,7 @@ export interface IChatdocRepositoryRequest extends IChatdocRepository {
 
 export interface IChatdocRepositoryResponse extends IChatdocRepository {}
 export type IChatdocRepositoriesResponse = IChatdocRepository[];
+export type IChatdocDocumentsResponse = IChatdocDocument[];
 
 export interface IChatdocChatResponse {
   answer: string;

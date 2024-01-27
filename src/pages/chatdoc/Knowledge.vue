@@ -41,7 +41,7 @@ export default defineComponent({
   async mounted() {
     this.loading = true;
     this.$store
-      .dispatch('chatdoc/getRepository', { id: this.id })
+      .dispatch('chatdoc/getDocuments', { repositoryId: this.id })
       .then(() => {
         this.loading = false;
       })

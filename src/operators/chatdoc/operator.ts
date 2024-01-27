@@ -2,6 +2,7 @@ import axios, { AxiosProgressEvent, AxiosResponse } from 'axios';
 import {
   IChatdocChatResponse,
   IChatdocDocumentResponse,
+  IChatdocDocumentsResponse,
   IChatdocRepositoriesResponse,
   IChatdocRepositoryResponse
 } from './models';
@@ -67,6 +68,27 @@ class ChatdocOperator {
       `/chatdoc/repositories`,
       {
         action: ACTION_RETRIEVE_ALL
+      },
+      {
+        headers: {
+          authorization: `Bearer ${options.token}`,
+          accept: 'application/json',
+          'content-type': 'application/json'
+        },
+        baseURL: BASE_URL_API
+      }
+    );
+  }
+
+  async getAllDocuments(
+    repositoryId: string,
+    options: { token: string }
+  ): Promise<AxiosResponse<IChatdocDocumentsResponse>> {
+    return await axios.post(
+      `/chatdoc/documents`,
+      {
+        action: ACTION_RETRIEVE_ALL,
+        repository_id: repositoryId
       },
       {
         headers: {
