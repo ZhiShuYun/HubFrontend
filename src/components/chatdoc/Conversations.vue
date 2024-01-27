@@ -68,9 +68,8 @@
 import { defineComponent } from 'vue';
 import { ElSkeleton, ElInput } from 'element-plus';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { ROUTE_CHAT_CONVERSATION } from '@/router/constants';
-import { IChatdocRepository, chatdocOperator } from '@/operators';
-import { IChatdocConversation } from '@/operators';
+import { ROUTE_CHATDOC_CONVERSATION, ROUTE_CHATDOC_CONVERSATION_NEW } from '@/router/constants';
+import { IChatdocRepository, chatdocOperator, IChatdocConversation } from '@/operators';
 
 export default defineComponent({
   name: 'SidePanel',
@@ -82,11 +81,14 @@ export default defineComponent({
   props: {},
   emits: ['click'],
   computed: {
+    repositoryId() {
+      return this.$route.params?.repositoryId?.toString();
+    },
     conversationId() {
-      return this.$route.params?.id?.toString();
+      return this.$route.params?.conversationId?.toString();
     },
     repository(): IChatdocRepository | undefined {
-      return this.$store.state?.chatdoc?.repositories?.find((repository) => repository.id === this.id);
+      return this.$store.state?.chatdoc?.repositories?.find((repository) => repository.id === this.repositoryId);
     },
     conversations() {
       return this.repository?.conversations;
@@ -97,9 +99,12 @@ export default defineComponent({
   },
   methods: {
     async onNewConversation() {
-      // this.$router.push({
-      //   name: ROUTE_CHATDOC_CONVERSATION
-      // });
+      this.$router.push({
+        name: ROUTE_CHATDOC_CONVERSATION_NEW,
+        params: {
+          repositoryId: this.repositoryId
+        }
+      });
     },
     async onConfirm(conversation: IChatdocConversation) {
       if (conversation?.deleting) {
@@ -117,9 +122,10 @@ export default defineComponent({
         return;
       }
       this.$router.push({
-        name: ROUTE_CHAT_CONVERSATION,
+        name: ROUTE_CHATDOC_CONVERSATION,
         params: {
-          id
+          repositoryId: this.repositoryId,
+          conversationId: id
         }
       });
       this.$emit('click', id);

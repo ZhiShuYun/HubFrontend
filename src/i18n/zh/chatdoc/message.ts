@@ -8,5 +8,16 @@ export default {
   createDocumentError: '录入文档失败',
   dragOrClickToUpload: '拖拽或点击上传',
   learningDocument: '学习中，请稍后...',
-  startNewChat: '开始新会话'
+  startNewChat: '开始新会话',
+  errorApiError: '回答失败，请稍后重试',
+  errorBadRequest: '请求内容不规范，请重新提问',
+  errorNoConversation: '对话内容不存在或者已经过期，请发起新的会话',
+  errorContentTooLarge: '问题内容过长，请缩短后重试',
+  errorTooManyRequests: '您的操作过于频繁，请稍后重试',
+  errorUsedUp: '您的套餐次数已经用完，请购买更多次数继续使用',
+  errorUnknown: '服务器出现未知错误，请稍后重试或联系客服',
+  errorTimeout: '回答问题超时，请稍后重试',
+  errorNotApplied: '您尚未申请该服务，请先申请再继续提问',
+  confirmDelete: '确定删除',
+  howToUse: '按 Shift+Enter 键可以换行'
 };

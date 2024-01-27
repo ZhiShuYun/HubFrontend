@@ -254,13 +254,16 @@ class ChatdocOperator {
   }
 
   async chat(
-    repositoryId: string,
+    payload: { repositoryId: string; question: string; conversationId?: string; knowledgeFallback?: boolean },
     options: { token: string; stream: (response: IChatdocChatResponse) => void }
   ): Promise<AxiosResponse<IChatdocChatResponse>> {
     return await axios.post(
       `/chatdoc/chat`,
       {
-        repository_id: repositoryId
+        repository_id: payload.repositoryId,
+        question: payload.question,
+        conversation_id: payload.conversationId,
+        stateful: true
       },
       {
         headers: {

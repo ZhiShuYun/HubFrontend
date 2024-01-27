@@ -1,5 +1,10 @@
 import { ACTION_CREATE, ACTION_DELETE, ACTION_UPDATE, ROLE_ASSISTANT, ROLE_SYSTEM, ROLE_USER } from '@/constants';
 
+export interface IError {
+  code: string;
+  detail?: string;
+}
+
 export interface IChatdocRepository {
   id: string;
   name?: string;
@@ -27,7 +32,16 @@ export interface IChatdocConversation {
 
 export interface IChatdocMessage {
   content?: string;
+  error?: IError;
+  state?: IChatdocMessageState;
   role?: typeof ROLE_SYSTEM | typeof ROLE_ASSISTANT | typeof ROLE_USER;
+}
+
+export enum IChatdocMessageState {
+  PENDING = 'pending',
+  ANSWERING = 'answering',
+  FINISHED = 'finished',
+  FAILED = 'failed'
 }
 
 export interface IChatdocChatRequest {
@@ -58,4 +72,5 @@ export interface IChatdocChatResponse {
   answer: string;
   delta_answer: string;
   repository_id?: string;
+  conversation_id?: string;
 }

@@ -23,7 +23,7 @@ export interface IChatModel {
   description: string;
 }
 
-export interface IError {
+interface IError {
   code: string;
   detail?: string;
 }
