@@ -1,4 +1,10 @@
-import { ROUTE_CHATDOC_CHAT, ROUTE_CHATDOC_INDEX, ROUTE_CHATDOC_KNOWLEDGE, ROUTE_CHATDOC_SETTING } from './constants';
+import {
+  ROUTE_CHATDOC_CONVERSATION,
+  ROUTE_CHATDOC_CONVERSATION_NEW,
+  ROUTE_CHATDOC_INDEX,
+  ROUTE_CHATDOC_KNOWLEDGE,
+  ROUTE_CHATDOC_SETTING
+} from './constants';
 
 export default {
   path: '/chatdoc',
@@ -13,17 +19,22 @@ export default {
       component: () => import('@/pages/chatdoc/Index.vue')
     },
     {
-      path: 'chat',
-      name: ROUTE_CHATDOC_CHAT,
-      component: () => import('@/pages/chatdoc/Chat.vue')
+      path: 'repository/:repositoryId/conversation',
+      name: ROUTE_CHATDOC_CONVERSATION_NEW,
+      component: () => import('@/pages/chatdoc/Conversation.vue')
     },
     {
-      path: 'knowledge/:id',
+      path: 'repository/:repositoryId/conversation/:conversationId',
+      name: ROUTE_CHATDOC_CONVERSATION,
+      component: () => import('@/pages/chatdoc/Conversation.vue')
+    },
+    {
+      path: 'repository/:repositoryId/knowledge',
       name: ROUTE_CHATDOC_KNOWLEDGE,
       component: () => import('@/pages/chatdoc/Knowledge.vue')
     },
     {
-      path: 'setting',
+      path: 'repository/:repositoryId',
       name: ROUTE_CHATDOC_SETTING,
       component: () => import('@/pages/chatdoc/Setting.vue')
     }

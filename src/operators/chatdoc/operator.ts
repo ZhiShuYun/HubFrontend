@@ -1,12 +1,14 @@
 import axios, { AxiosProgressEvent, AxiosResponse } from 'axios';
 import {
   IChatdocChatResponse,
+  IChatdocConversation,
+  IChatdocConversationsResponse,
   IChatdocDocumentResponse,
   IChatdocDocumentsResponse,
   IChatdocRepositoriesResponse,
   IChatdocRepositoryResponse
 } from './models';
-import { ACTION_RETRIEVE_ALL, BASE_URL_API } from '@/constants';
+import { ACTION_RETRIEVE_ALL, ACTION_UPDATE, BASE_URL_API } from '@/constants';
 import { ACTION_CREATE, ACTION_DELETE, ACTION_RETRIEVE, ACTION_RETRIEVE_BATCH } from '@/constants';
 
 class ChatdocOperator {
@@ -101,6 +103,23 @@ class ChatdocOperator {
     );
   }
 
+  async getAllConversations(repositoryId: string): Promise<AxiosResponse<IChatdocConversationsResponse>> {
+    return await axios.post(
+      `/chatdoc/conversations`,
+      {
+        action: ACTION_RETRIEVE_ALL,
+        repository_id: repositoryId
+      },
+      {
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json'
+        },
+        baseURL: BASE_URL_API
+      }
+    );
+  }
+
   async getRepositories(ids: string[]): Promise<AxiosResponse<IChatdocRepositoriesResponse>> {
     return await axios.post(
       `/chatdoc/repositories`,
@@ -119,14 +138,20 @@ class ChatdocOperator {
   }
 
   async createDocument(
-    repositoryId: string,
+    payload: {
+      repositoryId: string;
+      fileUrl: string;
+      fileName: string;
+    },
     options: { token: string }
   ): Promise<AxiosResponse<IChatdocDocumentResponse>> {
     return await axios.post(
       `/chatdoc/documents`,
       {
         action: ACTION_CREATE,
-        repository_id: repositoryId
+        repository_id: payload.repositoryId,
+        file_url: payload.fileUrl,
+        file_name: payload.fileName
       },
       {
         headers: {
@@ -157,6 +182,24 @@ class ChatdocOperator {
     );
   }
 
+  async retrieveConversation(id: string, options: { token: string }): Promise<AxiosResponse<IChatdocDocumentResponse>> {
+    return await axios.post(
+      `/chatdoc/conversations`,
+      {
+        action: ACTION_RETRIEVE,
+        id
+      },
+      {
+        headers: {
+          authorization: `Bearer ${options.token}`,
+          accept: 'application/json',
+          'content-type': 'application/json'
+        },
+        baseURL: BASE_URL_API
+      }
+    );
+  }
+
   async deleteDocument(id: string, options: { token: string }): Promise<AxiosResponse<IChatdocDocumentResponse>> {
     return await axios.post(
       `/chatdoc/documents`,
@@ -167,6 +210,41 @@ class ChatdocOperator {
       {
         headers: {
           authorization: `Bearer ${options.token}`,
+          accept: 'application/json',
+          'content-type': 'application/json'
+        },
+        baseURL: BASE_URL_API
+      }
+    );
+  }
+
+  async updateConversation(payload: IChatdocConversation) {
+    return await axios.post(
+      `/chatdoc/conversations`,
+      {
+        action: ACTION_UPDATE,
+        id: payload.id,
+        messages: payload.messages
+      },
+      {
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json'
+        },
+        baseURL: BASE_URL_API
+      }
+    );
+  }
+
+  async deleteConversation(id: string): Promise<AxiosResponse<IChatdocDocumentResponse>> {
+    return await axios.post(
+      `/chatdoc/conversations`,
+      {
+        action: ACTION_DELETE,
+        id
+      },
+      {
+        headers: {
           accept: 'application/json',
           'content-type': 'application/json'
         },

@@ -77,7 +77,7 @@ import { ElButton, ElTooltip, ElMenu, ElMenuItem } from 'element-plus';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   ROUTE_CHATDOC_INDEX,
-  ROUTE_CHATDOC_CHAT,
+  ROUTE_CHATDOC_CONVERSATION,
   ROUTE_CHATDOC_KNOWLEDGE,
   ROUTE_CHATDOC_SETTING,
   ROUTE_CHAT_CONVERSATION,
@@ -131,7 +131,7 @@ export default defineComponent({
         },
         displayName: this.$t('common.nav.chatdoc'),
         icon: 'fa-solid fa-file-lines',
-        routes: [ROUTE_CHATDOC_INDEX, ROUTE_CHATDOC_CHAT, ROUTE_CHATDOC_KNOWLEDGE, ROUTE_CHATDOC_SETTING]
+        routes: [ROUTE_CHATDOC_INDEX, ROUTE_CHATDOC_CONVERSATION, ROUTE_CHATDOC_KNOWLEDGE, ROUTE_CHATDOC_SETTING]
       });
     }
 

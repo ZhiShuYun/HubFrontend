@@ -2,6 +2,7 @@ import { IApplication, IChatConversation, IChatModel } from '@/operators';
 import { IChatdocState } from './models';
 import { Status } from '../common/models';
 import { IChatdocRepository } from '@/operators/chatdoc/models';
+import { log } from '@/utils';
 
 export const resetAll = (state: IChatdocState): void => {
   state.applications = [];
@@ -17,21 +18,45 @@ export const setGetApplicationsStatus = (state: IChatdocState, payload: Status):
 };
 
 export const setRepositories = (state: IChatdocState, payload: IChatdocRepository[]): void => {
-  state.repositories = payload;
+  const currentRepositories = state.repositories;
+  if (currentRepositories) {
+    // update the repositories
+    payload.forEach((repository: IChatdocRepository) => {
+      const index = currentRepositories.findIndex((item: IChatdocRepository) => item.id === repository.id);
+      if (index !== -1) {
+        currentRepositories[index] = {
+          ...currentRepositories[index],
+          ...repository
+        };
+      }
+    });
+    state.repositories = currentRepositories;
+    return;
+  } else {
+    // set the repositories
+    state.repositories = payload;
+  }
 };
 
-export const setRepository = (state: IChatdocState, payload: { repository: IChatdocRepository }): void => {
+export const setRepository = (state: IChatdocState, payload: IChatdocRepository): void => {
+  log(setRepository, 'mutation', payload);
   // find the repository and set it
-  const { repository } = payload;
+  const repository = payload;
   const repositories = state.repositories;
   if (!repositories) {
+    log(setRepository, 'no repositories');
     return;
   }
   const index = repositories.findIndex((item: IChatdocRepository) => item.id === repository.id);
   if (index === -1) {
+    log(setRepository, 'no repository found');
     return;
   }
-  repositories[index] = repository;
+  log(setRepository, 'set repository for index', index, repository);
+  repositories[index] = {
+    ...repositories[index],
+    ...repository
+  };
 };
 
 export const setGetRepositoriesStatus = (state: IChatdocState, payload: Status): void => {

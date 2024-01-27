@@ -4,7 +4,10 @@ export interface IChatdocRepository {
   id: string;
   name?: string;
   description?: string;
+  deleting?: boolean;
+  editing?: boolean;
   documents?: IChatdocDocument[];
+  conversations?: IChatdocConversation[];
 }
 
 export interface IChatdocDocument {
@@ -12,6 +15,14 @@ export interface IChatdocDocument {
   repository_id: string;
   file_url: string;
   file_name: string;
+}
+
+export interface IChatdocConversation {
+  id: string;
+  repository_id: string;
+  messages: IChatdocMessage[];
+  editing?: boolean;
+  deleting?: boolean;
 }
 
 export interface IChatdocMessage {
@@ -32,6 +43,8 @@ export interface IChatdocDocumentRequest extends IChatdocDocument {
 }
 
 export interface IChatdocDocumentResponse extends IChatdocDocument {}
+
+export type IChatdocConversationsResponse = IChatdocConversation[];
 
 export interface IChatdocRepositoryRequest extends IChatdocRepository {
   action: typeof ACTION_CREATE | typeof ACTION_UPDATE | typeof ACTION_DELETE;

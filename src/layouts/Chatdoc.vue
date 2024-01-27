@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <el-menu :default-active="activeMenu" mode="horizontal" :ellipsis="false" class="menu">
+    <el-menu v-if="repositoryId" :default-active="activeMenu" mode="horizontal" :ellipsis="false" class="menu">
       <el-menu-item
         v-for="(menuItem, menuItemIndex) in menuItems"
         :key="menuItemIndex"
@@ -19,7 +19,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { ElMenu, ElMenuItem } from 'element-plus';
-import { ROUTE_CHATDOC_CHAT, ROUTE_CHATDOC_KNOWLEDGE, ROUTE_CHATDOC_SETTING } from '@/router';
+import {
+  ROUTE_CHATDOC_CONVERSATION,
+  ROUTE_CHATDOC_CONVERSATION_NEW,
+  ROUTE_CHATDOC_KNOWLEDGE,
+  ROUTE_CHATDOC_SETTING
+} from '@/router';
 import { RouteLocationRaw } from 'vue-router';
 
 interface IMenuItem {
@@ -29,6 +34,7 @@ interface IMenuItem {
 }
 
 interface IData {
+  repositoryId: string;
   drawer: boolean;
   activeMenu: string | undefined;
   menuItems: IMenuItem[];
@@ -42,6 +48,7 @@ export default defineComponent({
   },
   data(): IData {
     return {
+      repositoryId: this.$route.params?.repositoryId?.toString(),
       drawer: false,
       activeMenu: undefined,
       menuItems: [
@@ -49,9 +56,10 @@ export default defineComponent({
           index: 'chat',
           title: this.$t('chatdoc.nav.chat'),
           route: {
-            name: ROUTE_CHATDOC_CHAT
+            name: ROUTE_CHATDOC_CONVERSATION_NEW
           }
         },
+        /*
         {
           index: 'setting',
           title: this.$t('chatdoc.nav.setting'),
@@ -59,6 +67,7 @@ export default defineComponent({
             name: ROUTE_CHATDOC_SETTING
           }
         },
+        */
         {
           index: 'knowledge',
           title: this.$t('chatdoc.nav.knowledge'),
@@ -83,7 +92,13 @@ export default defineComponent({
     async onClickMenu(menuItem: IMenuItem) {
       this.activeMenu = menuItem.index;
       if (menuItem.route) {
-        await this.$router.push(menuItem.route);
+        await this.$router.push({
+          // @ts-ignore
+          ...menuItem.route,
+          params: {
+            id: this.id
+          }
+        });
       }
     }
   }
@@ -103,12 +118,10 @@ export default defineComponent({
 
   .chatdoc {
     height: 100%;
-    padding: 15px;
     flex: 1;
-    width: calc(100% - 300px);
-    height: 100%;
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
   }
 }
 </style>

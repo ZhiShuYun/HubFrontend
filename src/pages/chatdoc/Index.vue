@@ -66,7 +66,7 @@ export default defineComponent({
       this.$router.push({
         name: ROUTE_CHATDOC_KNOWLEDGE,
         params: {
-          id: repository.id
+          repositoryId: repository.id
         }
       });
     }
