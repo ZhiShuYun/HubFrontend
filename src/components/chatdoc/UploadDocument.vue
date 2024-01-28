@@ -82,14 +82,16 @@ export default defineComponent({
           fileName: this.fileList[0].name
         })
         .then(() => {
-          this.learning = false;
           ElMessage.success(this.$t('chatdoc.message.createDocumentSuccess'));
           this.dialogVisible = false;
           this.$store.dispatch('chatdoc/getDocuments', { repositoryId: this.$route.params.repositoryId });
         })
         .catch(() => {
-          this.learning = false;
           ElMessage.error(this.$t('chatdoc.message.createDocumentError'));
+        })
+        .finally(() => {
+          this.fileList = [];
+          this.learning = false;
         });
     }
   }

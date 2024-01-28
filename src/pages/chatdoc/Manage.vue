@@ -3,10 +3,19 @@
     <template #chatdoc>
       <div class="wrapper">
         <div class="title">
-          {{ $t('chatdoc.title.knowledge') }}
+          {{ $t('chatdoc.title.manage') }}
         </div>
         <div class="introduction">
           {{ $t('chatdoc.message.introductionForKnowledge') }}
+        </div>
+        <div class="status">
+          <api-status
+            :initializing="initializing"
+            :application="application"
+            :need-apply="needApply"
+            :api-id="apiId"
+            @refresh="$store.dispatch('chatdoc/getApplications')"
+          />
         </div>
         <div class="operations">
           <upload-document />
@@ -55,9 +64,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Layout from '@/layouts/Chatdoc.vue';
-import { IChatdocRepository } from '@/operators';
+import { IApplication, IChatdocRepository } from '@/operators';
 import { ElButton, ElTag, ElTable, ElTableColumn, ElMessage } from 'element-plus';
 import UploadDocument from '@/components/chatdoc/UploadDocument.vue';
+import { Status } from '@/store/common/models';
+import { API_ID_CHATDOC_DOCUMENTS } from '@/operators/chatdoc/constants';
+import ApiStatus from '@/components/common/ApiStatus.vue';
 
 export default defineComponent({
   name: 'ChatdocKnowledge',
@@ -66,6 +78,7 @@ export default defineComponent({
     ElButton,
     ElTable,
     ElTag,
+    ApiStatus,
     ElTableColumn,
     UploadDocument
   },
@@ -81,6 +94,21 @@ export default defineComponent({
     },
     documents() {
       return this.repository?.documents;
+    },
+    needApply() {
+      return this.$store.state.chatdoc.getApplicationsStatus === Status.Success && !this.application;
+    },
+    applications() {
+      return this.$store.state.chatdoc.applications;
+    },
+    application() {
+      return this.applications?.find((application: IApplication) => application.api?.id === API_ID_CHATDOC_DOCUMENTS);
+    },
+    initializing() {
+      return this.$store.state.chatdoc.getApplicationsStatus === Status.Request;
+    },
+    apiId() {
+      return API_ID_CHATDOC_DOCUMENTS;
     }
   },
   async mounted() {
@@ -96,11 +124,7 @@ export default defineComponent({
       });
   },
   methods: {
-    onUpload() {
-      console.log('onUpload');
-    },
     onDelete(id: string) {
-      // ElMessage.info(this.$t('chatdoc.message.deleteDocument'));
       this.$store.dispatch('chatdoc/deleteDocument', { id }).then(() => {
         ElMessage.success(this.$t('chatdoc.message.deleteDocumentSuccess'));
         this.$store.dispatch('chatdoc/getDocuments', {
@@ -114,6 +138,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .wrapper {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 30px;
@@ -140,5 +166,10 @@ export default defineComponent({
 }
 .documents {
   width: 100%;
+}
+
+.status {
+  margin-bottom: 10px;
+  width: fit-content;
 }
 </style>

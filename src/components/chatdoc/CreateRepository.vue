@@ -54,6 +54,10 @@ export default defineComponent({
   computed: {},
   methods: {
     async onSubmit() {
+      if (!this.form.name) {
+        ElMessage.error(this.$t('chatdoc.message.nameRequired'));
+        return;
+      }
       this.creating = true;
       this.$store
         .dispatch('chatdoc/createRepository', {
@@ -86,5 +90,9 @@ export default defineComponent({
   margin-top: 5px;
   background-color: #eee;
   margin-bottom: 0;
+}
+
+.el-button {
+  border-radius: 20px;
 }
 </style>

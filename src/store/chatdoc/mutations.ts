@@ -7,6 +7,7 @@ import { log } from '@/utils';
 export const resetAll = (state: IChatdocState): void => {
   state.applications = [];
   state.getApplicationsStatus = Status.None;
+  state.repositories = [];
 };
 
 export const setApplications = (state: IChatdocState, payload: IApplication[]): void => {

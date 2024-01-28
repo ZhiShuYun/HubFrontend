@@ -1,6 +1,10 @@
 <template>
   <div class="main">
     <el-menu v-if="repositoryId" :default-active="activeMenu" mode="horizontal" :ellipsis="false" class="menu">
+      <div class="repository">
+        <font-awesome-icon class="mr-2" :icon="['fas', 'book']" />
+        <span>{{ repository?.name }}</span>
+      </div>
       <el-menu-item
         v-for="(menuItem, menuItemIndex) in menuItems"
         :key="menuItemIndex"
@@ -19,8 +23,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { ElMenu, ElMenuItem } from 'element-plus';
-import { ROUTE_CHATDOC_CONVERSATION_NEW, ROUTE_CHATDOC_KNOWLEDGE } from '@/router';
+import { ROUTE_CHATDOC_CONVERSATION_NEW, ROUTE_CHATDOC_MANAGE } from '@/router';
 import { RouteLocationRaw } from 'vue-router';
+import { IChatdocRepository } from '@/operators';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 interface IMenuItem {
   index: string;
@@ -38,7 +44,8 @@ export default defineComponent({
   name: 'LayoutChatdoc',
   components: {
     ElMenu,
-    ElMenuItem
+    ElMenuItem,
+    FontAwesomeIcon
   },
   data(): IData {
     return {
@@ -62,10 +69,10 @@ export default defineComponent({
         },
         */
         {
-          index: 'knowledge',
-          title: this.$t('chatdoc.nav.knowledge'),
+          index: 'manage',
+          title: this.$t('chatdoc.nav.manage'),
           route: {
-            name: ROUTE_CHATDOC_KNOWLEDGE
+            name: ROUTE_CHATDOC_MANAGE
           }
         }
       ]
@@ -79,6 +86,9 @@ export default defineComponent({
         return filterResult[0]?.index;
       }
       return undefined;
+    },
+    repository(): IChatdocRepository | undefined {
+      return this.$store.state?.chatdoc?.repositories?.find((repository) => repository.id === this.repositoryId);
     }
   },
   async mounted() {
@@ -113,6 +123,15 @@ export default defineComponent({
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
+  height: 100%;
+
+  .repository {
+    position: absolute;
+    left: 50px;
+    top: 20px;
+    font-weight: bold;
+  }
 
   .menu {
     width: 100%;
@@ -121,10 +140,7 @@ export default defineComponent({
 
   .chatdoc {
     height: 100%;
-    flex: 1;
     width: 100%;
-    display: flex;
-    flex-direction: row;
   }
 }
 </style>

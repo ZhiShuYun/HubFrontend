@@ -4,6 +4,15 @@
       <div class="wrapper">
         <conversations class="side" />
         <div class="chat">
+          <div class="status">
+            <api-status
+              :initializing="initializing"
+              :application="application"
+              :need-apply="needApply"
+              :api-id="apiId"
+              @refresh="$store.dispatch('chatdoc/getApplications')"
+            />
+          </div>
           <div class="dialogue">
             <div class="messages">
               <message
@@ -54,6 +63,8 @@ import { log } from '@/utils';
 import { ROUTE_CHATDOC_CONVERSATION } from '@/router';
 import axios from 'axios';
 import { isJSONString } from '@/utils/is';
+import { Status } from '@/store/common/models';
+import ApiStatus from '@/components/common/ApiStatus.vue';
 
 export default defineComponent({
   name: 'ChatdocChat',
@@ -61,7 +72,8 @@ export default defineComponent({
     Layout,
     Conversations,
     Message,
-    InputBox
+    InputBox,
+    ApiStatus
   },
   data() {
     return {
@@ -99,6 +111,15 @@ export default defineComponent({
     },
     applications() {
       return this.$store.state.chatdoc.applications;
+    },
+    needApply() {
+      return this.$store.state.chatdoc.getApplicationsStatus === Status.Success && !this.application;
+    },
+    initializing() {
+      return this.$store.state.chatdoc.getApplicationsStatus === Status.Request;
+    },
+    apiId() {
+      return API_ID_CHATDOC_CHAT;
     }
   },
   async mounted() {
@@ -245,6 +266,10 @@ export default defineComponent({
   flex-direction: column;
   height: 100%;
   display: flex;
+
+  .status {
+    margin-bottom: 10px;
+  }
 
   .dialogue {
     flex: 1;

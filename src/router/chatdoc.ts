@@ -2,7 +2,7 @@ import {
   ROUTE_CHATDOC_CONVERSATION,
   ROUTE_CHATDOC_CONVERSATION_NEW,
   ROUTE_CHATDOC_INDEX,
-  ROUTE_CHATDOC_KNOWLEDGE,
+  ROUTE_CHATDOC_MANAGE,
   ROUTE_CHATDOC_SETTING
 } from './constants';
 
@@ -29,9 +29,9 @@ export default {
       component: () => import('@/pages/chatdoc/Conversation.vue')
     },
     {
-      path: 'repository/:repositoryId/knowledge',
-      name: ROUTE_CHATDOC_KNOWLEDGE,
-      component: () => import('@/pages/chatdoc/Knowledge.vue')
+      path: 'repository/:repositoryId/manage',
+      name: ROUTE_CHATDOC_MANAGE,
+      component: () => import('@/pages/chatdoc/Manage.vue')
     },
     {
       path: 'repository/:repositoryId',

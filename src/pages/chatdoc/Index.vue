@@ -2,6 +2,21 @@
   <layout>
     <template #chatdoc>
       <div class="wrapper">
+        <div class="title">
+          {{ $t('chatdoc.title.repositories') }}
+        </div>
+        <div class="introduction">
+          {{ $t('chatdoc.message.introductionForRepository') }}
+        </div>
+        <div class="status">
+          <api-status
+            :initializing="initializing"
+            :application="application"
+            :need-apply="needApply"
+            :api-id="apiId"
+            @refresh="$store.dispatch('chatdoc/getApplications')"
+          />
+        </div>
         <el-row class="repositories" :gutter="15">
           <el-col :xl="4" :md="6" :sm="12" :xs="24">
             <el-card class="repository text-center" shadow="hover" @click="onCreate">
@@ -48,10 +63,13 @@
 import { defineComponent } from 'vue';
 import Layout from '@/layouts/Chatdoc.vue';
 import { ElCard, ElRow, ElCol, ElDropdown, ElDropdownItem, ElDropdownMenu, ElMessage } from 'element-plus';
-import { IChatdocRepository } from '@/operators';
-import { ROUTE_CHATDOC_KNOWLEDGE } from '@/router';
+import { IApplication, IChatdocRepository } from '@/operators';
+import { ROUTE_CHATDOC_MANAGE } from '@/router';
 import CreateRepository from '@/components/chatdoc/CreateRepository.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import ApiStatus from '@/components/common/ApiStatus.vue';
+import { Status } from '@/store/common/models';
+import { API_ID_CHATDOC_REPOSITORIES } from '@/operators/chatdoc/constants';
 
 export default defineComponent({
   name: 'ChatdocKnowledge',
@@ -64,14 +82,32 @@ export default defineComponent({
     FontAwesomeIcon,
     ElDropdown,
     ElDropdownItem,
-    ElDropdownMenu
+    ElDropdownMenu,
+    ApiStatus
   },
   data() {
     return {};
   },
   computed: {
+    apiId() {
+      return API_ID_CHATDOC_REPOSITORIES;
+    },
     repositories() {
       return this.$store.state.chatdoc.repositories;
+    },
+    needApply() {
+      return this.$store.state.chatdoc.getApplicationsStatus === Status.Success && !this.application;
+    },
+    applications() {
+      return this.$store.state.chatdoc.applications;
+    },
+    application() {
+      return this.applications?.find(
+        (application: IApplication) => application.api?.id === API_ID_CHATDOC_REPOSITORIES
+      );
+    },
+    initializing() {
+      return this.$store.state.chatdoc.getApplicationsStatus === Status.Request;
     }
   },
   async mounted() {},
@@ -81,7 +117,7 @@ export default defineComponent({
     },
     onClick(repository: IChatdocRepository) {
       this.$router.push({
-        name: ROUTE_CHATDOC_KNOWLEDGE,
+        name: ROUTE_CHATDOC_MANAGE,
         params: {
           repositoryId: repository.id
         }
@@ -99,9 +135,29 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .wrapper {
+  width: 100%;
+  height: 100%;
   padding: 20px;
   background-color: #f2f3f5;
 }
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.introduction {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.status {
+  margin-bottom: 10px;
+  width: fit-content;
+}
+
 .repository {
   width: 100%;
   height: 150px;

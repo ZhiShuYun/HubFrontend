@@ -1,12 +1,14 @@
 export default {
   introductionForKnowledge: '知识库中可添加文档，在机器人回答时，可运用库中的知识进行回复。',
+  introductionForRepository:
+    '知识库是一组文档的集合，您可以在知识库中添加文档，机器人在回答时，会从知识库中的文档中进行回复。',
   uploadDocumentsExceed: '上传文档数量超过限制',
   uploadDocumentsError: '上传文档失败',
   uploadDocumentsSuccess: '上传文档成功',
-  createDocumentSuccess: '录入文档成功',
-  startCreateDocument: '开始录入文档...',
-  createDocumentError: '录入文档失败',
-  dragOrClickToUpload: '拖拽或点击上传',
+  createDocumentSuccess: '学习文档成功',
+  startCreateDocument: '开始学习文档...',
+  createDocumentError: '学习文档失败',
+  dragOrClickToUpload: '拖拽或点击上传文档',
   learningDocument: '学习中，请稍后...',
   startNewChat: '开始新会话',
   errorApiError: '回答失败，请稍后重试',
@@ -23,5 +25,7 @@ export default {
   createRepositorySuccess: '创建知识库成功',
   createRepositoryFailed: '创建知识库失败',
   deleteRepositorySuccess: '删除知识库成功',
-  deleteDocumentSuccess: '删除文档成功'
+  deleteDocumentSuccess: '删除文档成功',
+  currentRepository: '当前知识库',
+  nameRequired: '名称不能为空'
 };
