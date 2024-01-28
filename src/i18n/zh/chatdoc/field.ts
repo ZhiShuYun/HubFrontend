@@ -7,5 +7,7 @@ export default {
   state: '状态',
   stateProcessing: '学习中',
   stateCompleted: '学习完成',
-  stateFailed: '学习失败'
+  stateFailed: '学习失败',
+  name: '名称',
+  description: '描述'
 };

@@ -19,5 +19,9 @@ export default {
   errorTimeout: '回答问题超时，请稍后重试',
   errorNotApplied: '您尚未申请该服务，请先申请再继续提问',
   confirmDelete: '确定删除',
-  howToUse: '按 Shift+Enter 键可以换行'
+  howToUse: '按 Shift+Enter 键可以换行',
+  createRepositorySuccess: '创建知识库成功',
+  createRepositoryFailed: '创建知识库失败',
+  deleteRepositorySuccess: '删除知识库成功',
+  deleteDocumentSuccess: '删除文档成功'
 };

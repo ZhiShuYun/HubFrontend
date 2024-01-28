@@ -19,7 +19,6 @@
               :disabled="answering"
               :question="question"
               @update:question="question = $event"
-              @update:references="references = $event"
               @submit="onSubmit"
             />
           </div>
@@ -69,8 +68,8 @@ export default defineComponent({
       loading: false,
       repositoryId: this.$route.params.repositoryId.toString(),
       answering: false,
-      question: '',
-      references: []
+      question: ''
+      // references: []
     };
   },
   computed: {
@@ -120,7 +119,7 @@ export default defineComponent({
         content: this.question,
         role: ROLE_USER
       });
-      console.debug('onSubmit', this.question, this.references);
+      console.debug('onSubmit', this.question);
       await this.onFetchAnswer();
     },
     async onScrollDown() {
@@ -137,11 +136,9 @@ export default defineComponent({
       const endpoint = this.application?.api?.endpoint;
       const path = this.application?.api?.path;
       const question = this.question;
-      const references = this.references;
-      log(this.onFetchAnswer, 'validated', question, references);
+      log(this.onFetchAnswer, 'validated', question);
       // reset question and references
       this.question = '';
-      this.references = [];
       if (!token || !endpoint || !question || !path) {
         console.error('no token or endpoint or question');
         this.messages.push({
@@ -186,7 +183,7 @@ export default defineComponent({
         .then(async () => {
           log(this.onFetchAnswer, 'finished fetch answer');
           this.messages[this.messages.length - 1].state = IChatdocMessageState.FINISHED;
-          await this.$store.dispatch('chat/setConversation', {
+          await this.$store.dispatch('chatdoc/setConversation', {
             id: conversationId,
             messages: this.messages
           });
@@ -201,8 +198,7 @@ export default defineComponent({
             });
           }
           this.onScrollDown();
-          await this.$store.dispatch('chat/getConversations');
-          await this.$store.dispatch('chat/getApplications');
+          await this.$store.dispatch('chatdoc/getConversations', { repositoryId: this.repositoryId });
         })
         .catch((error) => {
           if (this.messages && this.messages.length > 0) {

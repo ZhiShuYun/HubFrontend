@@ -19,12 +19,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { ElMenu, ElMenuItem } from 'element-plus';
-import {
-  ROUTE_CHATDOC_CONVERSATION,
-  ROUTE_CHATDOC_CONVERSATION_NEW,
-  ROUTE_CHATDOC_KNOWLEDGE,
-  ROUTE_CHATDOC_SETTING
-} from '@/router';
+import { ROUTE_CHATDOC_CONVERSATION_NEW, ROUTE_CHATDOC_KNOWLEDGE } from '@/router';
 import { RouteLocationRaw } from 'vue-router';
 
 interface IMenuItem {
@@ -36,7 +31,6 @@ interface IMenuItem {
 interface IData {
   repositoryId: string;
   drawer: boolean;
-  activeMenu: string | undefined;
   menuItems: IMenuItem[];
 }
 
@@ -50,7 +44,6 @@ export default defineComponent({
     return {
       repositoryId: this.$route.params?.repositoryId?.toString(),
       drawer: false,
-      activeMenu: undefined,
       menuItems: [
         {
           index: 'chat',
@@ -78,6 +71,16 @@ export default defineComponent({
       ]
     };
   },
+  computed: {
+    activeMenu() {
+      // @ts-ignore
+      const filterResult = this.menuItems.filter((menuItem) => menuItem.route?.name === this.$route.name);
+      if (filterResult) {
+        return filterResult[0]?.index;
+      }
+      return undefined;
+    }
+  },
   async mounted() {
     await this.onGetApplications();
     await this.onGetRepositories();
@@ -96,7 +99,7 @@ export default defineComponent({
           // @ts-ignore
           ...menuItem.route,
           params: {
-            id: this.id
+            id: this.repositoryId
           }
         });
       }

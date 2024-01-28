@@ -56,7 +56,7 @@
 import { defineComponent } from 'vue';
 import Layout from '@/layouts/Chatdoc.vue';
 import { IChatdocRepository } from '@/operators';
-import { ElButton, ElTag, ElTable, ElTableColumn } from 'element-plus';
+import { ElButton, ElTag, ElTable, ElTableColumn, ElMessage } from 'element-plus';
 import UploadDocument from '@/components/chatdoc/UploadDocument.vue';
 
 export default defineComponent({
@@ -100,7 +100,13 @@ export default defineComponent({
       console.log('onUpload');
     },
     onDelete(id: string) {
-      console.log('onDelete', id);
+      // ElMessage.info(this.$t('chatdoc.message.deleteDocument'));
+      this.$store.dispatch('chatdoc/deleteDocument', { id }).then(() => {
+        ElMessage.success(this.$t('chatdoc.message.deleteDocumentSuccess'));
+        this.$store.dispatch('chatdoc/getDocuments', {
+          repositoryId: this.repositoryId
+        });
+      });
     }
   }
 });
@@ -110,16 +116,23 @@ export default defineComponent({
 .wrapper {
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 30px;
 }
+
+.el-button {
+  border-radius: 20px;
+}
+
 .title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
 .introduction {
   margin-bottom: 20px;
+  font-size: 14px;
+  color: #666;
 }
 
 .operations {

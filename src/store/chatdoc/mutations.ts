@@ -20,17 +20,17 @@ export const setGetApplicationsStatus = (state: IChatdocState, payload: Status):
 export const setRepositories = (state: IChatdocState, payload: IChatdocRepository[]): void => {
   const currentRepositories = state.repositories;
   if (currentRepositories) {
-    // update the repositories
+    // merge current repositories into payload
     payload.forEach((repository: IChatdocRepository) => {
       const index = currentRepositories.findIndex((item: IChatdocRepository) => item.id === repository.id);
       if (index !== -1) {
-        currentRepositories[index] = {
+        payload[index] = {
           ...currentRepositories[index],
           ...repository
         };
       }
     });
-    state.repositories = currentRepositories;
+    state.repositories = payload;
     return;
   } else {
     // set the repositories

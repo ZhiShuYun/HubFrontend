@@ -1,32 +1,45 @@
 <template>
   <layout>
     <template #chatdoc>
-      <el-row class="repositories" :gutter="15">
-        <el-col :xl="3" :md="4" :xm="6" :xs="24">
-          <el-card class="repository" @click="onCreate">
-            <font-awesome-icon :icon="['fas', 'book']" />
-          </el-card>
-        </el-col>
-        <el-col
-          v-for="(repository, repositoryIndex) in repositories"
-          :key="repositoryIndex"
-          :xl="3"
-          :md="4"
-          :xm="6"
-          :xs="24"
-        >
-          <el-card class="repository" @click="onClick(repository)">
-            <h2 class="name">{{ repository.name }}</h2>
-            <p class="id">
-              <font-awesome-icon :icon="['fas', 'book']" />
-              {{ repository.id }}
-            </p>
-            <p class="description">
-              {{ repository.description }}
-            </p>
-          </el-card>
-        </el-col>
-      </el-row>
+      <div class="wrapper">
+        <el-row class="repositories" :gutter="15">
+          <el-col :xl="4" :md="6" :sm="12" :xs="24">
+            <el-card class="repository text-center" shadow="hover" @click="onCreate">
+              <create-repository />
+              <p class="operation">{{ $t('chatdoc.title.createRepository') }}</p>
+            </el-card>
+          </el-col>
+          <el-col
+            v-for="(repository, repositoryIndex) in repositories"
+            :key="repositoryIndex"
+            :xl="4"
+            :md="6"
+            :sm="12"
+            :xs="24"
+          >
+            <el-card class="repository" shadow="hover" @click="onClick(repository)">
+              <el-dropdown v-if="false">
+                <font-awesome-icon class="more" :icon="['fas', 'book']" />
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="onDelete(repository.id)">{{
+                      $t('common.button.delete')
+                    }}</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+              <h2 class="name">{{ repository.name }}</h2>
+              <p class="id">
+                <font-awesome-icon :icon="['fas', 'book']" />
+                ID: {{ repository.id }}
+              </p>
+              <p class="description">
+                {{ repository.description }}
+              </p>
+            </el-card>
+          </el-col>
+        </el-row>
+      </div>
     </template>
   </layout>
 </template>
@@ -34,10 +47,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Layout from '@/layouts/Chatdoc.vue';
-import { ElCard, ElRow, ElCol } from 'element-plus';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { ElCard, ElRow, ElCol, ElDropdown, ElDropdownItem, ElDropdownMenu, ElMessage } from 'element-plus';
 import { IChatdocRepository } from '@/operators';
 import { ROUTE_CHATDOC_KNOWLEDGE } from '@/router';
+import CreateRepository from '@/components/chatdoc/CreateRepository.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export default defineComponent({
   name: 'ChatdocKnowledge',
@@ -46,7 +60,11 @@ export default defineComponent({
     ElCard,
     ElRow,
     ElCol,
-    FontAwesomeIcon
+    CreateRepository,
+    FontAwesomeIcon,
+    ElDropdown,
+    ElDropdownItem,
+    ElDropdownMenu
   },
   data() {
     return {};
@@ -62,12 +80,17 @@ export default defineComponent({
       console.log('onCreate');
     },
     onClick(repository: IChatdocRepository) {
-      console.log('onClick', repository);
       this.$router.push({
         name: ROUTE_CHATDOC_KNOWLEDGE,
         params: {
           repositoryId: repository.id
         }
+      });
+    },
+    onDelete(id: string) {
+      this.$store.dispatch('chatdoc/deleteRepository', { id }).then(() => {
+        ElMessage.success(this.$t('chatdoc.message.deleteRepositorySuccess'));
+        this.$store.dispatch('chatdoc/getRepositories');
       });
     }
   }
@@ -75,10 +98,28 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  padding: 20px;
+  background-color: #f2f3f5;
+}
 .repository {
   width: 100%;
+  height: 150px;
   margin-bottom: 20px;
   cursor: pointer;
+  position: relative;
+
+  .el-dropdown {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+
+  .operation {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
 
   .name {
     font-size: 16px;

@@ -67,6 +67,85 @@ export const getRepositories = async ({
   return repositories;
 };
 
+export const deleteRepository = async (
+  { state }: ActionContext<IChatdocState, IRootState>,
+  payload: {
+    id: string;
+  }
+): Promise<IChatdocRepository> => {
+  log(deleteRepository, 'start to delete repository');
+  const applications = state.applications;
+  console.log('applications', applications);
+  const application = applications?.find(
+    (application: IApplication) => application.api?.id === API_ID_CHATDOC_REPOSITORIES
+  );
+  console.log('application', application);
+  const token = application?.credential?.token;
+  if (!token) {
+    return Promise.reject('no token');
+  }
+  const repository = (
+    await chatdocOperator.deleteRepository(payload.id, {
+      token
+    })
+  ).data;
+  log(deleteRepository, 'delete repository success', repository);
+  return repository;
+};
+
+export const deleteDocument = async (
+  { state }: ActionContext<IChatdocState, IRootState>,
+  payload: {
+    id: string;
+  }
+): Promise<IChatdocDocument> => {
+  log(deleteDocument, 'start to delete document');
+  const applications = state.applications;
+  console.log('applications', applications);
+  const application = applications?.find(
+    (application: IApplication) => application.api?.id === API_ID_CHATDOC_DOCUMENTS
+  );
+  console.log('application', application);
+  const token = application?.credential?.token;
+  if (!token) {
+    return Promise.reject('no token');
+  }
+  const document = (
+    await chatdocOperator.deleteDocument(payload.id, {
+      token
+    })
+  ).data;
+  log(deleteRepository, 'delete document success', document);
+  return document;
+};
+
+export const createRepository = async (
+  { state }: ActionContext<IChatdocState, IRootState>,
+  payload: {
+    name: string;
+    description?: string;
+  }
+): Promise<IChatdocRepository> => {
+  log(createRepository, 'start to create repository');
+  const applications = state.applications;
+  console.log('applications', applications);
+  const application = applications?.find(
+    (application: IApplication) => application.api?.id === API_ID_CHATDOC_REPOSITORIES
+  );
+  console.log('application', application);
+  const token = application?.credential?.token;
+  if (!token) {
+    return Promise.reject('no token');
+  }
+  const repository = (
+    await chatdocOperator.createRepository(payload, {
+      token
+    })
+  ).data;
+  log(createRepository, 'create repository success', repository);
+  return repository;
+};
+
 export const createDocument = async (
   { state }: ActionContext<IChatdocState, IRootState>,
   payload: {
@@ -180,13 +259,16 @@ export const getRepository = async (
 };
 
 export default {
+  createRepository,
   setApplications,
   getApplications,
   getRepositories,
+  deleteRepository,
   getRepository,
   setRepository,
   getConversations,
   getDocuments,
   resetAll,
-  createDocument
+  createDocument,
+  deleteDocument
 };

@@ -12,11 +12,19 @@ import { ACTION_RETRIEVE_ALL, ACTION_UPDATE, BASE_URL_API } from '@/constants';
 import { ACTION_CREATE, ACTION_DELETE, ACTION_RETRIEVE, ACTION_RETRIEVE_BATCH } from '@/constants';
 
 class ChatdocOperator {
-  async createRepository(options: { token: string }): Promise<AxiosResponse<IChatdocRepositoryResponse>> {
+  async createRepository(
+    payload: {
+      name: string;
+      description?: string;
+    },
+    options: { token: string }
+  ): Promise<AxiosResponse<IChatdocRepositoryResponse>> {
     return await axios.post(
-      `/chatdoc/tasks`,
+      `/chatdoc/repositories`,
       {
-        action: ACTION_CREATE
+        action: ACTION_CREATE,
+        name: payload.name,
+        description: payload.description
       },
       {
         headers: {

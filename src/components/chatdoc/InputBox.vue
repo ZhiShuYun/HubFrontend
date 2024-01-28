@@ -1,27 +1,5 @@
 <template>
   <div class="input-box">
-    <el-upload
-      v-model:file-list="fileList"
-      :class="{
-        upload: true,
-        disabled: !canUpload
-      }"
-      :disabled="!canUpload"
-      name="file"
-      :show-file-list="true"
-      :limit="1"
-      :multiple="false"
-      action="/api/v1/files/"
-      :on-exceed="onExceed"
-      :on-error="onError"
-      :headers="headers"
-    >
-      <el-tooltip class="box-item" effect="dark" :content="$t('chat.message.uploadFile')" placement="top">
-        <span class="btn btn-upload">
-          <font-awesome-icon icon="fa-solid fa-paperclip" class="icon icon-attachment" />
-        </span>
-      </el-tooltip>
-    </el-upload>
     <span
       :class="{
         btn: true,
@@ -56,9 +34,7 @@ export default defineComponent({
   name: 'InputBox',
   components: {
     ElInput,
-    ElTooltip,
-    FontAwesomeIcon,
-    ElUpload
+    FontAwesomeIcon
   },
   props: {
     disabled: {
@@ -66,17 +42,12 @@ export default defineComponent({
       required: false,
       default: false
     },
-    references: {
-      type: Array,
-      required: false,
-      default: () => []
-    },
     question: {
       type: String,
       required: true
     }
   },
-  emits: ['update:question', 'update:references', 'submit'],
+  emits: ['update:question', 'submit'],
   data() {
     return {
       questionValue: this.question,
@@ -84,26 +55,11 @@ export default defineComponent({
     };
   },
   computed: {
-    headers() {
-      return {
-        Authorization: `Bearer ${this.$store.state.token.access}`
-      };
-    },
-    urls(): string[] {
-      // @ts-ignore
-      return this.fileList.map((file: UploadFile) => file?.response?.file_url);
-    },
-    canUpload() {
-      return [CHAT_MODEL_CHATGPT4_VISION.name].includes(this.model.name);
-    },
     model(): IChatModel {
       return this.$store.state.chat.model;
     }
   },
   watch: {
-    urls(val) {
-      this.$emit('update:references', val);
-    },
     questionValue(val: string) {
       this.$emit('update:question', val);
     },
@@ -124,12 +80,6 @@ export default defineComponent({
         return;
       }
       this.$emit('submit');
-    },
-    onExceed() {
-      ElMessage.warning(this.$t('chat.message.uploadReferencesExceed'));
-    },
-    onError() {
-      ElMessage.error(this.$t('chat.message.uploadReferencesError'));
     }
   }
 });
@@ -168,21 +118,10 @@ export default defineComponent({
   background: none;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
   top: 30px;
-  .upload {
-    display: inline-block;
-    &.disabled {
-      .btn-upload {
-        cursor: not-allowed;
-        .icon-attachment {
-          color: #eee;
-        }
-      }
-    }
-  }
   .input {
     border: none;
     width: calc(100% - 80px);
-    margin-left: 30px;
+    margin-left: 5px;
   }
   .info {
     display: block;
@@ -198,13 +137,6 @@ export default defineComponent({
     cursor: pointer;
     position: absolute;
     top: 7px;
-    &.btn-upload {
-      left: 10px;
-      .icon-attachment {
-        font-size: 14px;
-        color: #666;
-      }
-    }
     &.btn-send {
       right: 15px;
       &.disabled {
