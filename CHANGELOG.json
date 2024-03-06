@@ -2,6 +2,21 @@
   "name": "@zhishuyun/hub",
   "entries": [
     {
+      "date": "Wed, 06 Mar 2024 15:51:23 GMT",
+      "version": "1.0.2",
+      "tag": "@zhishuyun/hub_v1.0.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "cqc@germey.cn",
+            "package": "@zhishuyun/hub",
+            "commit": "705501b8387c12c8330060766ef39978e6a72ba0",
+            "comment": "fix mj task issue"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 29 Jan 2024 16:17:58 GMT",
       "version": "1.0.1",
       "tag": "@zhishuyun/hub_v1.0.1",

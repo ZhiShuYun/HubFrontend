@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix mj task issue",
-  "packageName": "@zhishuyun/hub",
-  "email": "cqc@germey.cn",
-  "dependentChangeType": "patch"
-}
