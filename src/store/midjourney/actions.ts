@@ -69,6 +69,7 @@ export const getImagineTasks = async (
   });
   log(getImagineTasks, 'get imagine api usage success', apiUsages);
   let tasks = (await midjourneyOperator.tasks(apiUsages.map((apiUsage) => apiUsage.metadata?.task_id as string))).data;
+  log(getImagineTasks, 'get imagine tasks success', tasks);
   tasks = tasks.map((task: IMidjourneyImagineTask) => {
     const apiUsage = apiUsages.filter((apiUsage) => apiUsage.metadata?.task_id === task?.id)[0];
     return {
