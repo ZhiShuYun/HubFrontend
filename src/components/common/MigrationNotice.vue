@@ -37,6 +37,8 @@
 import { defineComponent } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+const STORAGE_KEY = 'migration-notice-dismissed';
+
 export default defineComponent({
   name: 'MigrationNotice',
   components: {
@@ -44,12 +46,13 @@ export default defineComponent({
   },
   data() {
     return {
-      visible: true
+      visible: localStorage.getItem(STORAGE_KEY) !== 'true'
     };
   },
   methods: {
     onClose() {
       this.visible = false;
+      localStorage.setItem(STORAGE_KEY, 'true');
     }
   }
 });
